@@ -11,6 +11,7 @@ export const RegisterSchema = z.object({
 export const LoginSchema = z.object({
   email: z.string().email({ message: "email is required" }),
   password: z.string().min(1, { message: "password is required" }),
+  code: z.string().optional(),
 });
 
 export const ResetSchema = z.object({
