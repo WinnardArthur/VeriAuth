@@ -2,6 +2,7 @@
 
 import React, { useState, useTransition } from "react";
 import * as z from "zod";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -21,7 +22,6 @@ import { FormError } from "../form-error";
 import { FormSuccess } from "../form-success";
 import { login } from "@/actions/login";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
 
 const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -46,8 +46,6 @@ const LoginForm = () => {
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError("");
     setSuccess("");
-
-    console.log('are your un')
 
     startTransition(() => {
       login(values)
