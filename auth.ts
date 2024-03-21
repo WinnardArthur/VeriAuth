@@ -54,7 +54,6 @@ export const {
           where: { id: twoFactorConfirmation.id },
         });
       }
-      console.log("hello world");
 
       return true;
     },
@@ -69,6 +68,11 @@ export const {
         session.user.role = token.role as UserRole;
       }
 
+      // Check token for two factor and assign to session
+      if (session.user) {
+        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
+      }
+
       return session;
     },
     async jwt({ token }) {
@@ -80,6 +84,7 @@ export const {
       if (!existingUser) return token;
 
       token.role = existingUser.role;
+      token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 
       return token;
     },
