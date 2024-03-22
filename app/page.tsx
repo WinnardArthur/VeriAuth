@@ -24,7 +24,7 @@ export default function Home() {
           Fast and Secure authentication service
         </p>
         <div>
-          <LoginButton>
+          <LoginButton mode="modal" asChild>
             <Button variant="secondary" size="lg">
               Sign in
             </Button>

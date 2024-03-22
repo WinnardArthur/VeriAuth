@@ -37,7 +37,16 @@ export default auth((req) => {
   // If user is not logged in and route is a private route
   // Redirect user to login/signup
   if (!isLoggedIn && !isPublicRoute) {
-    return Response.redirect(new URL("/auth/login", nextUrl));
+    let callbackkUrl = nextUrl.pathname;
+    if (nextUrl.search) {
+      callbackkUrl += nextUrl.search;
+    }
+
+    const encodedCallbackUrl = encodeURIComponent(callbackkUrl);
+
+    return Response.redirect(
+      new URL(`/auth/login?callbackUrl=${encodedCallbackUrl}`, nextUrl)
+    );
   }
 
   return;
