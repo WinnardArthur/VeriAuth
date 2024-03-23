@@ -6,6 +6,8 @@ import { signIn } from "@/auth";
 import { LoginSchema } from "@/lib/validations";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { AuthError } from "next-auth";
+import bcryptjs from "bcryptjs";
+
 import {
   generateVerificationToken,
   generateTwoFactorToken,
@@ -18,7 +20,7 @@ import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation
 
 export const login = async (
   values: z.infer<typeof LoginSchema>,
-  callbackUrl?: string | null,
+  callbackUrl?: string | null
 ) => {
   const validatedFields = LoginSchema.safeParse(values);
 
@@ -32,6 +34,15 @@ export const login = async (
 
   if (!existingUser || !existingUser.email || !existingUser.password) {
     return { error: "Email does not exists" };
+  }
+
+  const passwordsMatch = await bcryptjs.compare(
+    password,
+    existingUser.password
+  );
+
+  if (!passwordsMatch) {
+    return { error: "Invalid password" };
   }
 
   if (!existingUser.emailVerified) {
